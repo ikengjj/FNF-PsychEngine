@@ -15,6 +15,7 @@ jobs:
           haxe-version: 4.3.4
       - name: Install Haxelib
         run: |
+          haxelib setup ~/haxelib
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp        
           chmod +x ./setup/unix.sh
           sh ./setup/unix.sh
