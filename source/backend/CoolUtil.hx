@@ -180,4 +180,8 @@ class CoolUtil
 				text.borderStyle = NONE;
 		}
 	}
+	public static function showPopUp(message:String, title:String):Void
+	{
+		FlxG.stage.window.alert(message, title);
+	}
 }
