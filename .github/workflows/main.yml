@@ -7,12 +7,19 @@ on:
   workflow_dispatch:
 jobs:
   buildAndroid:
-    runs-on: macos-15
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.4
+      - name: Setup Android NDK
+        id: setup-ndk
+        uses: nttld/setup-ndk@main
+        with:
+          ndk-version: r27c
+          add-to-path: false
+
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -24,8 +31,8 @@ jobs:
       - name: Configure Android
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
           haxelib run lime config ANDROID_SETUP true    
       - name: Compile
         run: haxelib run lime build android
